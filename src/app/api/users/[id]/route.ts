@@ -6,7 +6,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const client = await connectDatabase();
     const body = await request.json();
     const { id } = await params;
-    const res = await updateDocument(client, 'users', body, new ObjectId(id));
+    const { _id, ...updateData } = body;
+    const res = await updateDocument(client, 'users', updateData, new ObjectId(id));
     return new NextResponse(
         res
     );
@@ -31,3 +32,5 @@ export async function GET(
     const res = await getDocumentById(client, 'users', new ObjectId(id));
     return NextResponse.json(res);
 }
+
+
